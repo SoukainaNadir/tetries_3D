@@ -1,6 +1,7 @@
 #include "Piece.h"
 #include <random>
 #include <ctime>
+#include <algorithm>
 
 Piece::Piece(PieceType type, float x, float y) : type(type), x(x), y(y) {
     color = getRandomColor();

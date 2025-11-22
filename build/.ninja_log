@@ -27,3 +27,6 @@
 4736	4852	7855287008564741	external/glfw/src/libglfw3.a	cdbd18377aa27c39
 3451	7379	7855286995715872	CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj	d7af2a02372fb326
 3857	7561	7855286999770993	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0
+22	849	7855289642807965	CMakeFiles/Tetris3D.dir/src/Piece.cpp.obj	93a47cce0bb47604
+16	908	7855289642710710	CMakeFiles/Tetris3D.dir/src/GameField.cpp.obj	4de1560ca638f77f
+908	1088	7855289651661540	Tetris3D.exe	86eec1bda3c20dde

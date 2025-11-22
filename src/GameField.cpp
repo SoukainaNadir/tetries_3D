@@ -1,6 +1,7 @@
 #include "GameField.h"
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
+#include <ctime>
 
 GameField::GameField() : gameState(GameState::WAITING_TO_START), currentPiece(nullptr), 
                          score(0), linesCleared(0), rng(std::time(0)), pieceDist(0, 5) {
