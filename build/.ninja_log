@@ -1,0 +1,29 @@
+# ninja log v7
+27	3414	7855286961474237	external/glfw/src/CMakeFiles/glfw.dir/platform.c.obj	3410daa676401dc9
+51	3426	7855286961701495	external/glfw/src/CMakeFiles/glfw.dir/null_init.c.obj	34547bc1f13470ce
+65	3437	7855286961856025	external/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.obj	37155248aa09cea0
+31	3444	7855286961506660	external/glfw/src/CMakeFiles/glfw.dir/vulkan.c.obj	34b259c6b47e61a3
+69	3451	7855286961895584	external/glfw/src/CMakeFiles/glfw.dir/win32_module.c.obj	de12637c3531f256
+46	3845	7855286961675006	external/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.obj	92835d44731e9ea2
+55	3852	7855286961759754	external/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.obj	23cd0b88115cc239
+91	3856	7855286962127338	external/glfw/src/CMakeFiles/glfw.dir/win32_init.c.obj	a720a9f2d3f21642
+24	3862	7855286961417502	external/glfw/src/CMakeFiles/glfw.dir/monitor.c.obj	394a527b5e9bb7c5
+3	3875	7855286961226858	CMakeFiles/glad.dir/src/glad.c.obj	add858efaacbf7f
+18	3885	7855286961372209	external/glfw/src/CMakeFiles/glfw.dir/init.c.obj	5528777f66437c83
+76	3886	7855286961970656	external/glfw/src/CMakeFiles/glfw.dir/win32_time.c.obj	9912783c985834d
+42	3886	7855286961624456	external/glfw/src/CMakeFiles/glfw.dir/egl_context.c.obj	18b5cfb4aa285678
+14	3887	7855286961320992	external/glfw/src/CMakeFiles/glfw.dir/context.c.obj	135495e410f36a2c
+35	3888	7855286961555046	external/glfw/src/CMakeFiles/glfw.dir/window.c.obj	3a5467c708bcf2de
+60	3888	7855286961814188	external/glfw/src/CMakeFiles/glfw.dir/null_window.c.obj	5949b9a44cb953fa
+84	3889	7855286962045748	external/glfw/src/CMakeFiles/glfw.dir/win32_thread.c.obj	8dd1bf4d307e96e4
+20	3948	7855286961412423	external/glfw/src/CMakeFiles/glfw.dir/input.c.obj	2f3db477195834b6
+3875	4081	7855286999970532	libglad.a	aef10affe65e6426
+3444	4610	7855286995645497	external/glfw/src/CMakeFiles/glfw.dir/wgl_context.c.obj	5754449d62169e7e
+3417	4618	7855286995394359	external/glfw/src/CMakeFiles/glfw.dir/win32_joystick.c.obj	84914397d388e1f8
+3426	4676	7855286995474723	external/glfw/src/CMakeFiles/glfw.dir/win32_monitor.c.obj	4f3a47a38427d456
+3437	4736	7855286995565122	external/glfw/src/CMakeFiles/glfw.dir/win32_window.c.obj	efe7e3544396f6ce
+3862	4798	7855287008985840	external/glfw/docs/html/index.html	bb0fbb2881362ad8
+3862	4798	7855287008985840	D:/M2 TSI/OpenGl/tetries_3D/build/external/glfw/docs/html/index.html	bb0fbb2881362ad8
+4736	4852	7855287008564741	external/glfw/src/libglfw3.a	cdbd18377aa27c39
+3451	7379	7855286995715872	CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj	d7af2a02372fb326
+3857	7561	7855286999770993	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0

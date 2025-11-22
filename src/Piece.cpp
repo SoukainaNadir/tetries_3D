@@ -1,62 +1,101 @@
 #include "Piece.h"
-#include <cstdlib>
+#include <random>
+#include <ctime>
 
-Piece::Piece(PieceType t, glm::vec3 pos) : type(t), position(pos) {
-    color = glm::vec3((rand()%100)/100.0f, (rand()%100)/100.0f, (rand()%100)/100.0f);
-    createShape();
+Piece::Piece(PieceType type, float x, float y) : type(type), x(x), y(y) {
+    color = getRandomColor();
+    initializePiece(type);
+    updateCubePositions();
 }
 
-void Piece::createShape() {
-    cubes.clear();
-    glm::vec3 offsets[4];
+Piece::~Piece() {
+    for (Cube* cube : cubes) {
+        delete cube;
+    }
+}
+
+void Piece::initializePiece(PieceType type) {
+    shape.clear();
     
-    switch(type) {
-        case I: offsets[0]={0,0,0}; offsets[1]={1,0,0}; offsets[2]={2,0,0}; offsets[3]={3,0,0}; break;
-        case T: offsets[0]={0,0,0}; offsets[1]={1,0,0}; offsets[2]={2,0,0}; offsets[3]={1,1,0}; break;
-        case L: offsets[0]={0,0,0}; offsets[1]={0,1,0}; offsets[2]={0,2,0}; offsets[3]={1,0,0}; break;
-        case J: offsets[0]={1,0,0}; offsets[1]={1,1,0}; offsets[2]={1,2,0}; offsets[3]={0,0,0}; break;
-        case S:
-            offsets[0] = {1,0,0};
-            offsets[1] = {2,0,0};
-            offsets[2] = {0,1,0};
-            offsets[3] = {1,1,0};
+    switch (type) {
+        case PieceType::I: // Line piece (horizontal)
+            shape = {{-2, 0}, {-1, 0}, {0, 0}, {1, 0}};
             break;
-
-        case Z:
-            offsets[0] = {0,0,0};
-            offsets[1] = {1,0,0};
-            offsets[2] = {1,1,0};
-            offsets[3] = {2,1,0};
+        case PieceType::T: // T piece
+            shape = {{0, 0}, {-1, 0}, {1, 0}, {0, 1}};
             break;
-
-
-
+        case PieceType::S: // S piece 
+            shape = {{0, 0}, {0, 1}, {1, 1}, {1, 2}};
+            break;
+        case PieceType::Z: // Z piece
+            shape = {{1, 0}, {1, 1}, {0, 1}, {0, 2}};
+            break;
+        case PieceType::J: // J piece
+            shape = {{0, 0}, {0, 1}, {0, -1}, {-1, -1}};
+            break;
+        case PieceType::L: // L piece
+            shape = {{0, 0}, {0, 1}, {0, -1}, {1, -1}};
+            break;
+        default: // Fallback to I piece
+            shape = {{-2, 0}, {-1, 0}, {0, 0}, {1, 0}};
+            break;
     }
-
-    for(int i=0; i<4; i++) {
-        cubes.push_back(Cube(position + offsets[i], color));
+    
+    // Create cubes for each block
+    for (size_t i = 0; i < shape.size(); i++) {
+        cubes.push_back(new Cube(0, 0, 0, color));
     }
 }
 
-void Piece::init() {
-    for(auto& cube : cubes) cube.init();
+void Piece::updateCubePositions() {
+    for (size_t i = 0; i < cubes.size(); i++) {
+        cubes[i]->setPosition(x + shape[i].x, y + shape[i].y, 0);
+        cubes[i]->setColor(color);
+    }
 }
 
-void Piece::render(GLuint shaderProgram) {
-    for(auto& cube : cubes) cube.render(shaderProgram);
+void Piece::render(const glm::mat4& view, const glm::mat4& projection) {
+    for (Cube* cube : cubes) {
+        cube->render(view, projection);
+    }
 }
 
-void Piece::moveLeft() {
-    position.x -= 1.0f;
-    for(auto& cube : cubes) cube.position.x -= 1.0f;
+void Piece::move(float dx, float dy) {
+    x += dx;
+    y += dy;
+    updateCubePositions();
 }
 
-void Piece::moveRight() {
-    position.x += 1.0f;
-    for(auto& cube : cubes) cube.position.x += 1.0f;
+void Piece::setPosition(float x, float y) {
+    this->x = x;
+    this->y = y;
+    updateCubePositions();
 }
 
-void Piece::moveDown() {
-    position.y -= 1.0f;
-    for(auto& cube : cubes) cube.position.y -= 1.0f;
+std::vector<glm::vec2> Piece::getBlockPositions() const {
+    std::vector<glm::vec2> positions;
+    for (const auto& block : shape) {
+        positions.push_back({x + block.x, y + block.y});
+    }
+    return positions;
+}
+
+glm::vec3 Piece::getRandomColor() {
+    static std::mt19937 rng(time(0));
+    static std::uniform_real_distribution<float> dist(0.2f, 0.9f);
+    
+    // Generate bright, saturated colors
+    float r = dist(rng);
+    float g = dist(rng);
+    float b = dist(rng);
+    
+    // Ensure at least one component is bright
+    float maxComp = std::max({r, g, b});
+    if (maxComp < 0.7f) {
+        if (r == maxComp) r = 0.8f;
+        else if (g == maxComp) g = 0.8f;
+        else b = 0.8f;
+    }
+    
+    return glm::vec3(r, g, b);
 }

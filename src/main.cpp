@@ -1,20 +1,89 @@
+#include "GameField.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "Shader.h"
-#include "Game.h"
+#include <chrono>
+#include <string>
 
-Game* gamePtr = nullptr;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 900;
+
+GameField* gameField = nullptr;
+GLFWwindow* window = nullptr;
+
+void updateWindowTitle(GameState state, int score, int lines) {
+    std::string title = "Tetris 3D - ";
+    switch (state) {
+        case GameState::WAITING_TO_START:
+            title += "Press SPACE to Start";
+            break;
+        case GameState::PLAYING:
+            title += "Playing | Score: " + std::to_string(score) + " | Lines: " + std::to_string(lines);
+            break;
+        case GameState::GAME_OVER:
+            title += "GAME OVER | Final Score: " + std::to_string(score) + " | Press SPACE to Restart";
+            break;
+    }
+    glfwSetWindowTitle(window, title.c_str());
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if(action == GLFW_PRESS) {
-        if(key == GLFW_KEY_A || key == GLFW_KEY_LEFT) gamePtr->moveLeft();
-        if(key == GLFW_KEY_E || key == GLFW_KEY_RIGHT) gamePtr->moveRight();
-        if(key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(window, true);
+    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        if (gameField) {
+            GameState state = gameField->getGameState();
+            
+            switch (key) {
+                case GLFW_KEY_SPACE:
+                    if (state == GameState::WAITING_TO_START) {
+                        gameField->startGame();
+                    } else if (state == GameState::GAME_OVER) {
+                        gameField->resetGame();
+                    }
+                    break;
+                    
+                case GLFW_KEY_A:
+                case GLFW_KEY_LEFT:
+                    if (state == GameState::PLAYING) {
+                        gameField->moveCurrentPiece(-1, 0);
+                    }
+                    break;
+                    
+                case GLFW_KEY_E:
+                case GLFW_KEY_RIGHT:
+                    if (state == GameState::PLAYING) {
+                        gameField->moveCurrentPiece(1, 0);
+                    }
+                    break;
+                    
+                case GLFW_KEY_S:
+                case GLFW_KEY_DOWN:
+                    if (state == GameState::PLAYING) {
+                        gameField->dropCurrentPiece();
+                    }
+                    break;
+                    
+                case GLFW_KEY_ESCAPE:
+                    glfwSetWindowShouldClose(window, true);
+                    break;
+            }
+        }
     }
+}
+
+void printInstructions() {
+    std::cout << "\n=== TETRIS 3D ===" << std::endl;
+    std::cout << "Controls:" << std::endl;
+    std::cout << "  SPACE: Start game / Restart when game over" << std::endl;
+    std::cout << "  A/LEFT: Move left" << std::endl;
+    std::cout << "  E/RIGHT: Move right" << std::endl;
+    std::cout << "  S/DOWN: Drop piece" << std::endl;
+    std::cout << "  ESC: Quit" << std::endl;
+    std::cout << "\nGame state shown in window title and console!" << std::endl;
+    std::cout << "==================\n" << std::endl;
 }
 
 int main() {
@@ -22,44 +91,65 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Tetris 3D", NULL, NULL);
+
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Tetris 3D", NULL, NULL);
+    if (window == NULL) {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
     glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetKeyCallback(window, key_callback);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
     glEnable(GL_DEPTH_TEST);
     
-    Shader shader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl");
-    Game game;
-    game.init();
-    
-    gamePtr = &game;
-    glfwSetKeyCallback(window, key_callback);
-    
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
-glm::mat4 view = glm::lookAt(glm::vec3(5,5,15), glm::vec3(5,5,0), glm::vec3(0,1,0));    
-    float lastTime = glfwGetTime();
-    
+    printInstructions();
+    gameField = new GameField();
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
+    float dropTimer = 0.0f;
+    const float DROP_INTERVAL = 0.4f;
+
+    GameState lastState = GameState::WAITING_TO_START;
+
+    // Render loop
     while (!glfwWindowShouldClose(window)) {
-        float currentTime = glfwGetTime();
-        float deltaTime = currentTime - lastTime;
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
-        
-        game.update(deltaTime);
-        
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+        // Update window title if state changed
+        GameState currentState = gameField->getGameState();
+        if (currentState != lastState) {
+            updateWindowTitle(currentState, 0, 0); // Will update with real score in playing state
+            lastState = currentState;
+        }
+
+        // Only update game logic when playing
+        if (gameField->getGameState() == GameState::PLAYING) {
+            dropTimer += deltaTime;
+            if (dropTimer >= DROP_INTERVAL) {
+                gameField->update();
+                dropTimer = 0.0f;
+            }
+        }
+
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        shader.use();
-        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        
-        game.render(shader.ID);
-        
+
+        gameField->render();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
+
+    delete gameField;
     glfwTerminate();
     return 0;
 }

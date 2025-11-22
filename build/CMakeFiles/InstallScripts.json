@@ -1,7 +1,10 @@
 {
 	"InstallScripts" : 
 	[
-		"D:/M2 TSI/OpenGl/tetries_3D/build/cmake_install.cmake"
+		"D:/M2 TSI/OpenGl/tetries_3D/build/cmake_install.cmake",
+		"D:/M2 TSI/OpenGl/tetries_3D/build/external/glfw/cmake_install.cmake",
+		"D:/M2 TSI/OpenGl/tetries_3D/build/external/glfw/src/cmake_install.cmake",
+		"D:/M2 TSI/OpenGl/tetries_3D/build/external/glfw/docs/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

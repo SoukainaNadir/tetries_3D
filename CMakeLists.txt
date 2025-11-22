@@ -3,23 +3,20 @@ project(Tetris3D)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Chemins GLFW
-set(GLFW_DIR "${CMAKE_SOURCE_DIR}/external/glfw")
-include_directories(${GLFW_DIR}/include)
+include_directories(include)
+include_directories(external/glm)
 
-# Chemins include
-include_directories(${CMAKE_SOURCE_DIR}/include)
+find_package(OpenGL REQUIRED)
 
-# Sources
-file(GLOB SOURCES "src/*.cpp" "src/*.c")
+add_subdirectory(external/glfw)
 
-add_executable(Tetris3D ${SOURCES})
+add_library(glad src/glad.c)
 
-# Link bibliothèques
-target_link_libraries(Tetris3D 
-    ${GLFW_DIR}/lib-mingw-w64/libglfw3.a
-    opengl32
-    gdi32
-    user32
-    kernel32
+file(GLOB SRC_FILES src/*.cpp)
+add_executable(Tetris3D ${SRC_FILES})
+
+target_link_libraries(Tetris3D
+    glfw
+    glad
+    ${OPENGL_LIBRARIES}
 )
