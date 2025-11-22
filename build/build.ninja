@@ -74,6 +74,13 @@ build libglad.a: C_STATIC_LIBRARY_LINKER__glad_ CMakeFiles/glad.dir/src/glad.c.o
 
 build cmake_object_order_depends_target_Tetris3D: phony || cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw
 
+build CMakeFiles/Tetris3D.dir/src/Board.cpp.obj: CXX_COMPILER__Tetris3D_unscanned_ D$:/M2$ TSI/OpenGl/tetries_3D/src/Board.cpp || cmake_object_order_depends_target_Tetris3D
+  DEP_FILE = CMakeFiles\Tetris3D.dir\src\Board.cpp.obj.d
+  FLAGS = -std=gnu++17
+  INCLUDES = -I"D:/M2 TSI/OpenGl/tetries_3D/include" -I"D:/M2 TSI/OpenGl/tetries_3D/external/glm" -I"D:/M2 TSI/OpenGl/tetries_3D/external/glfw/include"
+  OBJECT_DIR = CMakeFiles\Tetris3D.dir
+  OBJECT_FILE_DIR = CMakeFiles\Tetris3D.dir\src
+
 build CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj: CXX_COMPILER__Tetris3D_unscanned_ D$:/M2$ TSI/OpenGl/tetries_3D/src/Cube.cpp || cmake_object_order_depends_target_Tetris3D
   DEP_FILE = CMakeFiles\Tetris3D.dir\src\Cube.cpp.obj.d
   FLAGS = -std=gnu++17
@@ -110,7 +117,7 @@ build CMakeFiles/Tetris3D.dir/src/main.cpp.obj: CXX_COMPILER__Tetris3D_unscanned
 #############################################
 # Link the executable Tetris3D.exe
 
-build Tetris3D.exe: CXX_EXECUTABLE_LINKER__Tetris3D_ CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj CMakeFiles/Tetris3D.dir/src/GameField.cpp.obj CMakeFiles/Tetris3D.dir/src/Piece.cpp.obj CMakeFiles/Tetris3D.dir/src/main.cpp.obj | external/glfw/src/libglfw3.a libglad.a || external/glfw/src/libglfw3.a libglad.a
+build Tetris3D.exe: CXX_EXECUTABLE_LINKER__Tetris3D_ CMakeFiles/Tetris3D.dir/src/Board.cpp.obj CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj CMakeFiles/Tetris3D.dir/src/GameField.cpp.obj CMakeFiles/Tetris3D.dir/src/Piece.cpp.obj CMakeFiles/Tetris3D.dir/src/main.cpp.obj | external/glfw/src/libglfw3.a libglad.a || external/glfw/src/libglfw3.a libglad.a
   LINK_LIBRARIES = external/glfw/src/libglfw3.a  libglad.a  -lopengl32  -lglu32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Tetris3D.dir
   POST_BUILD = cd .

@@ -1,4 +1,4 @@
-#include "GameField.h"
+#include "Board.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -8,21 +8,15 @@
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
 
-GameField* gameField = nullptr;
+Board* board = nullptr;
 GLFWwindow* window = nullptr;
 
 void updateWindowTitle(GameState state, int score, int lines) {
     std::string title = "Tetris 3D - ";
     switch (state) {
-        case GameState::WAITING_TO_START:
-            title += "Press SPACE to Start";
-            break;
-        case GameState::PLAYING:
-            title += "Playing | Score: " + std::to_string(score) + " | Lines: " + std::to_string(lines);
-            break;
-        case GameState::GAME_OVER:
-            title += "GAME OVER | Final Score: " + std::to_string(score) + " | Press SPACE to Restart";
-            break;
+        case GameState::WAITING_TO_START: title += "Press SPACE to Start"; break;
+        case GameState::PLAYING: title += "Score: " + std::to_string(score) + " | Lines: " + std::to_string(lines); break;
+        case GameState::GAME_OVER: title += "GAME OVER | Score: " + std::to_string(score); break;
     }
     glfwSetWindowTitle(window, title.c_str());
 }
@@ -33,57 +27,28 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        if (gameField) {
-            GameState state = gameField->getGameState();
-            
+        if (board) {
+            GameState state = board->getGameState();
             switch (key) {
                 case GLFW_KEY_SPACE:
-                    if (state == GameState::WAITING_TO_START) {
-                        gameField->startGame();
-                    } else if (state == GameState::GAME_OVER) {
-                        gameField->resetGame();
-                    }
+                    if (state == GameState::WAITING_TO_START) board->startGame();
+                    else if (state == GameState::GAME_OVER) board->resetGame();
                     break;
-                    
-                case GLFW_KEY_A:
-                case GLFW_KEY_LEFT:
-                    if (state == GameState::PLAYING) {
-                        gameField->moveCurrentPiece(-1, 0);
-                    }
+                case GLFW_KEY_A: case GLFW_KEY_LEFT:
+                    if (state == GameState::PLAYING) board->moveCurrentPiece(-1, 0);
                     break;
-                    
-                case GLFW_KEY_E:
-                case GLFW_KEY_RIGHT:
-                    if (state == GameState::PLAYING) {
-                        gameField->moveCurrentPiece(1, 0);
-                    }
+                case GLFW_KEY_E: case GLFW_KEY_RIGHT:
+                    if (state == GameState::PLAYING) board->moveCurrentPiece(1, 0);
                     break;
-                    
-                case GLFW_KEY_S:
-                case GLFW_KEY_DOWN:
-                    if (state == GameState::PLAYING) {
-                        gameField->dropCurrentPiece();
-                    }
+                case GLFW_KEY_S: case GLFW_KEY_DOWN:
+                    if (state == GameState::PLAYING) board->dropCurrentPiece();
                     break;
-                    
                 case GLFW_KEY_ESCAPE:
                     glfwSetWindowShouldClose(window, true);
                     break;
             }
         }
     }
-}
-
-void printInstructions() {
-    std::cout << "\n=== TETRIS 3D ===" << std::endl;
-    std::cout << "Controls:" << std::endl;
-    std::cout << "  SPACE: Start game / Restart when game over" << std::endl;
-    std::cout << "  A/LEFT: Move left" << std::endl;
-    std::cout << "  E/RIGHT: Move right" << std::endl;
-    std::cout << "  S/DOWN: Drop piece" << std::endl;
-    std::cout << "  ESC: Quit" << std::endl;
-    std::cout << "\nGame state shown in window title and console!" << std::endl;
-    std::cout << "==================\n" << std::endl;
 }
 
 int main() {
@@ -93,8 +58,8 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Tetris 3D", NULL, NULL);
-    if (window == NULL) {
-        std::cout << "Failed to create GLFW window" << std::endl;
+    if (!window) {
+        std::cout << "Failed to create window" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -109,47 +74,42 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
     
-    printInstructions();
-    gameField = new GameField();
+    std::cout << "\n=== TETRIS 3D ===\nSPACE: Start | A/E: Move | S: Drop | ESC: Quit\n" << std::endl;
+    board = new Board();
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     float dropTimer = 0.0f;
-    const float DROP_INTERVAL = 0.4f;
-
     GameState lastState = GameState::WAITING_TO_START;
 
-    // Render loop
     while (!glfwWindowShouldClose(window)) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
 
-        // Update window title if state changed
-        GameState currentState = gameField->getGameState();
+        GameState currentState = board->getGameState();
         if (currentState != lastState) {
-            updateWindowTitle(currentState, 0, 0); // Will update with real score in playing state
+            updateWindowTitle(currentState, board->getScore(), board->getLinesCleared());
             lastState = currentState;
         }
 
-        // Only update game logic when playing
-        if (gameField->getGameState() == GameState::PLAYING) {
+        if (board->getGameState() == GameState::PLAYING) {
             dropTimer += deltaTime;
-            if (dropTimer >= DROP_INTERVAL) {
-                gameField->update();
+            if (dropTimer >= 0.4f) {
+                board->update();
                 dropTimer = 0.0f;
             }
         }
 
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // Soft pink background
+        glClearColor(0.98f, 0.92f, 0.95f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        gameField->render();
-
+        board->render();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    delete gameField;
+    delete board;
     glfwTerminate();
     return 0;
 }
