@@ -48,7 +48,7 @@ mkdir build && cd build
 
 # Configurer et compiler
 cmake ..
-make
+cmake --build .
 
 # Lancer le jeu
 ./Tetris3D.exe
