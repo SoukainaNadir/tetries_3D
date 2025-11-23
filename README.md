@@ -2,12 +2,15 @@
 
 Une implémentation 3D du jeu classique Tetris construite avec C++, OpenGL et GLFW.
 
-![Tetris 3D Demo](demo.png)
-
+<p align="center">
+  <img src="demo.png" alt="Tetris 3D Demo" width="700"/>
+</p>
 
 ## 🎬 Vidéo de Démonstration
 
-![Démonstration du Gameplay](demo.gif)
+<p align="center">
+  <img src="demo.gif" alt="Démonstration du Gameplay" width="500"/>
+</p>
 
 ## Fonctionnalités
 
