@@ -2,14 +2,14 @@
 #include <random>
 #include <ctime>
 
-// Girly pastel colors for pieces
+// Palette de couleurs 
 static const glm::vec3 PIECE_COLORS[] = {
-    glm::vec3(0.6f, 0.9f, 0.95f),   // I - Baby blue
-    glm::vec3(0.9f, 0.5f, 0.8f),    // T - Pink
-    glm::vec3(0.7f, 0.95f, 0.75f),  // S - Mint green
-    glm::vec3(0.95f, 0.6f, 0.6f),   // Z - Coral
-    glm::vec3(0.7f, 0.6f, 0.95f),   // J - Lavender
-    glm::vec3(1.0f, 0.75f, 0.5f)    // L - Peach
+    glm::vec3(0.6f, 0.9f, 0.95f),   
+    glm::vec3(0.9f, 0.5f, 0.8f),    
+    glm::vec3(0.7f, 0.95f, 0.75f),  
+    glm::vec3(0.95f, 0.6f, 0.6f), 
+    glm::vec3(0.7f, 0.6f, 0.95f), 
+    glm::vec3(1.0f, 0.75f, 0.5f)   
 };
 
 Piece::Piece(PieceType type, float x, float y) : type(type), x(x), y(y) {
@@ -35,6 +35,7 @@ void Piece::initializePiece(PieceType type) {
         default: shape = {{-2, 0}, {-1, 0}, {0, 0}, {1, 0}}; break;
     }
     
+    // On crée un cube pour chaque bloc de la pièce
     for (size_t i = 0; i < shape.size(); i++) {
         cubes.push_back(new Cube(0, 0, 0, color));
     }

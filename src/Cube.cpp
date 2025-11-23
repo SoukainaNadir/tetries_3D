@@ -2,55 +2,43 @@
 #include <iostream>
 
 const float Cube::vertices[] = {
-    // Front face
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // 0
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // 1
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // 2
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // 3
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
 
-    // Back face
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // 4
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // 5
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // 6
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // 7
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-    // Left face
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // 8
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // 9
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // 10
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // 11
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
 
-    // Right face
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // 12
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // 13
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // 14
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // 15
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
 
-    // Bottom face
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // 16
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // 17
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // 18
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // 19
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
 
-    // Top face
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // 20
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // 21
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, // 22
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f  // 23
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f
 };
 
 const unsigned int Cube::indices[] = {
-    // Front face
     0, 1, 2, 2, 3, 0,
-    // Back face
     4, 5, 6, 6, 7, 4,
-    // Left face
     8, 9, 10, 10, 11, 8,
-    // Right face
     12, 13, 14, 14, 15, 12,
-    // Bottom face
     16, 17, 18, 18, 19, 16,
-    // Top face
     20, 21, 22, 22, 23, 20
 };
 
@@ -87,17 +75,14 @@ uniform vec3 lightColor;
 uniform vec3 viewPos;
 
 void main() {
-    // Ambient
     float ambientStrength = 0.4;
     vec3 ambient = ambientStrength * lightColor;
     
-    // Diffuse
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
     
-    // Specular
     float specularStrength = 0.1;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
@@ -130,7 +115,6 @@ Cube::~Cube() {
 }
 
 void Cube::setupMesh() {
-    // Setup face mesh
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -148,22 +132,22 @@ void Cube::setupMesh() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // Setup edge mesh (12 edges)
+    // Les contours pour un joli effet visuel
     float edgeVertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f, // bottom back
-        -0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f, // top back
-        -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, // bottom front
-        -0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f, // top front
+        -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,
         
-        -0.5f, -0.5f, -0.5f, -0.5f, -0.5f,  0.5f, // bottom left
-         0.5f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f, // bottom right
-        -0.5f,  0.5f, -0.5f, -0.5f,  0.5f,  0.5f, // top left
-         0.5f,  0.5f, -0.5f,  0.5f,  0.5f,  0.5f, // top right
+        -0.5f, -0.5f, -0.5f, -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f, -0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,  0.5f,  0.5f,  0.5f,
         
-        -0.5f, -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, // back left
-         0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f, // back right
-        -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,  0.5f, // front left
-         0.5f, -0.5f,  0.5f,  0.5f,  0.5f,  0.5f  // front right
+        -0.5f, -0.5f, -0.5f, -0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,  0.5f,  0.5f,  0.5f
     };
 
     glGenVertexArrays(1, &edgeVAO);
@@ -180,7 +164,6 @@ void Cube::setupMesh() {
 }
 
 void Cube::createShaders() {
-    // Face shaders
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -197,7 +180,6 @@ void Cube::createShaders() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    // Edge shaders
     const char* edgeVertexSource = R"(
 #version 330 core
 layout (location = 0) in vec3 aPos;
@@ -250,7 +232,6 @@ void Cube::render(const glm::mat4& view, const glm::mat4& projection) {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, position);
 
-    // Render faces
     glUseProgram(shaderProgram);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
@@ -264,7 +245,6 @@ void Cube::render(const glm::mat4& view, const glm::mat4& projection) {
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-    // Render edges
     glUseProgram(edgeShaderProgram);
     glUniformMatrix4fv(glGetUniformLocation(edgeShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(glGetUniformLocation(edgeShaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));

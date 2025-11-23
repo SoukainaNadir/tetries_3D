@@ -44,7 +44,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void setWindowIcon(GLFWwindow* window, const char* iconPath) {
     int width, height, channels;
     
-    // Load the image
     unsigned char* pixels = stbi_load(iconPath, &width, &height, &channels, 4);
     
     if (pixels) {
@@ -55,10 +54,10 @@ void setWindowIcon(GLFWwindow* window, const char* iconPath) {
         
         glfwSetWindowIcon(window, 1, &icon);
         stbi_image_free(pixels);
-        std::cout << "Window icon loaded successfully!" << std::endl;
+        std::cout << "Icône chargée avec succès!" << std::endl;
     } else {
-        std::cout << "Failed to load window icon from: " << iconPath << std::endl;
-        std::cout << "Make sure stb_image.h is downloaded and the icon.png path is correct." << std::endl;
+        std::cout << "Impossible de charger l'icône depuis: " << iconPath << std::endl;
+        std::cout << "Vérifiez que stb_image.h est téléchargé et que le chemin icon.png est correct." << std::endl;
     }
 }
 
@@ -70,7 +69,7 @@ int main() {
 
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Tetris 3D", NULL, NULL);
     if (!window) {
-        std::cout << "Failed to create window" << std::endl;
+        std::cout << "Erreur lors de la création de la fenêtre" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -78,12 +77,11 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    // Load your custom icon
-    // When running from build directory, icon.png is in the parent directory
+    // Chargement de l'icône personnalisée
     setWindowIcon(window, "../icon.png");
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Échec de l'initialisation de GLAD" << std::endl;
         return -1;
     }
 
@@ -97,6 +95,7 @@ int main() {
     const float normalSpeed = 0.4f;
     const float fastSpeed = 0.05f;
 
+    // La boucle principale du jeu 
     while (!glfwWindowShouldClose(window)) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
@@ -105,6 +104,7 @@ int main() {
         if (board->getGameState() == GameState::PLAYING) {
             dropTimer += deltaTime;
             
+            // Vitesse rapide si on appuie sur S ou flèche du bas
             bool fastDrop = (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || 
                            glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS);
             
