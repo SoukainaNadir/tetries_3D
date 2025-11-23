@@ -5,6 +5,9 @@
 #include <chrono>
 #include <string>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 900;
 
@@ -38,6 +41,27 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+void setWindowIcon(GLFWwindow* window, const char* iconPath) {
+    int width, height, channels;
+    
+    // Load the image
+    unsigned char* pixels = stbi_load(iconPath, &width, &height, &channels, 4);
+    
+    if (pixels) {
+        GLFWimage icon;
+        icon.width = width;
+        icon.height = height;
+        icon.pixels = pixels;
+        
+        glfwSetWindowIcon(window, 1, &icon);
+        stbi_image_free(pixels);
+        std::cout << "Window icon loaded successfully!" << std::endl;
+    } else {
+        std::cout << "Failed to load window icon from: " << iconPath << std::endl;
+        std::cout << "Make sure stb_image.h is downloaded and the icon.png path is correct." << std::endl;
+    }
+}
+
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -54,6 +78,10 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
 
+    // Load your custom icon
+    // When running from build directory, icon.png is in the parent directory
+    setWindowIcon(window, "../icon.png");
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
@@ -66,8 +94,8 @@ int main() {
     auto lastTime = std::chrono::high_resolution_clock::now();
     float dropTimer = 0.0f;
     
-    const float normalSpeed = 0.4f;  // Normal fall speed
-    const float fastSpeed = 0.05f;   // Fast fall speed when S/Down is held
+    const float normalSpeed = 0.4f;
+    const float fastSpeed = 0.05f;
 
     while (!glfwWindowShouldClose(window)) {
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -77,7 +105,6 @@ int main() {
         if (board->getGameState() == GameState::PLAYING) {
             dropTimer += deltaTime;
             
-            // Check if S or Down arrow is held for fast drop
             bool fastDrop = (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || 
                            glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS);
             
@@ -89,7 +116,6 @@ int main() {
             }
         }
 
-        // Soft pink background
         glClearColor(0.96f, 0.91f, 0.94f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -101,4 +127,4 @@ int main() {
     delete board;
     glfwTerminate();
     return 0;
-} 
+}

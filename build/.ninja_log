@@ -27,10 +27,10 @@
 1402	2735	7855295064743334	CMakeFiles/Tetris3D.dir/src/Cube.cpp.obj	d7af2a02372fb326
 32	880	7855299478217768	CMakeFiles/Tetris3D.dir/src/Piece.cpp.obj	93a47cce0bb47604
 2684	2813	7855295077581262	external/glfw/src/libglfw3.a	cdbd18377aa27c39
-31	1410	7856025189752962	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0
+29	933	7856045911245916	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0
 1406	2946	7855295064803591	CMakeFiles/Tetris3D.dir/src/GameField.cpp.obj	4de1560ca638f77f
 30	1501	7856023467679753	CMakeFiles/Tetris3D.dir/src/Board.cpp.obj	134936c7ab339e2d
-1411	1591	7856025203561171	Tetris3D.exe	598d2244aad48d21
-34	1237	7855465406067419	CMakeFiles/Tetris3D.dir/src/TextRenderer.cpp.obj	7be0e2840a4c1134
-29	933	7856045911245916	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0
 933	1103	7856045920283488	Tetris3D.exe	598d2244aad48d21
+34	1237	7855465406067419	CMakeFiles/Tetris3D.dir/src/TextRenderer.cpp.obj	7be0e2840a4c1134
+32	2031	7856328900607670	CMakeFiles/Tetris3D.dir/src/main.cpp.obj	2b32bb5288fe8de0
+2032	2215	7856328920637333	Tetris3D.exe	598d2244aad48d21
