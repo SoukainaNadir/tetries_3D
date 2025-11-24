@@ -51,7 +51,7 @@ cmake ..
 cmake --build .
 
 # Lancer le jeu
-./Tetris3D.exe
+./Tetris3D
 ```
 
 ## Contrôles
