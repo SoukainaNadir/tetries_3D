@@ -15,7 +15,7 @@ Une implémentation 3D du jeu classique Tetris construite avec C++, OpenGL et GL
 ## Fonctionnalités
 
 - **Graphismes 3D** - Rendu avec OpenGL utilisant des shaders personnalisés et l'éclairage Phong
-- **Gameplay** - Mouvement des pièces en temps réel avec détection de collision
+- **Gameplay** - Mouvement des pièces en temps réel avec détection de collision et rotation
 - **Système de Score** - Suivi des points avec bonus pour les lignes effacées
 - **Interface Personnalisée** - Rendu de texte basé sur bitmap
 - **Contrôles** - Entrée clavier
@@ -62,6 +62,7 @@ cmake --build .
 | <kbd>A</kbd> ou <kbd>←</kbd> | Déplacer à gauche |
 | <kbd>E</kbd> ou <kbd>→</kbd> | Déplacer à droite |
 | <kbd>S</kbd> ou <kbd>↓</kbd> | Chute rapide |
+| <kbd>W</kbd> ou <kbd>↑</kbd> | Rotation |
 | <kbd>ÉCHAP</kbd> | Quitter |
 
 ## Structure du Projet
@@ -105,7 +106,7 @@ Tetris3D/
 
 #### `Piece` - Logique des Tetrominos
 - 6 types de pièces (I, T, S, Z, J, L)
-- Mouvement et positionnement
+- Mouvement, positionnement et rotation
 
 
 #### `Cube` - Primitive 3D
@@ -122,11 +123,12 @@ Tetris3D/
 
 1. **Apparition** - Une nouvelle pièce apparaît en haut au centre
 2. **Chute** - La pièce descend automatiquement
-3. **Vérification de Collision** - Validation contre les limites et les pièces verrouillées
-4. **Verrouillage** - La pièce devient partie du plateau
-5. **Effacement des Lignes** - Suppression des lignes horizontales complètes
-6. **Score** - Attribution des points (100 par ligne, ×2 pour plusieurs)
-7. **Répétition** ou **Game Over**
+3. **Rotation** - Possibilité de faire pivoter la pièce
+4. **Vérification de Collision** - Validation contre les limites et les pièces verrouillées
+5. **Verrouillage** - La pièce devient partie du plateau
+6. **Effacement des Lignes** - Suppression des lignes horizontales complètes
+7. **Score** - Attribution des points (100 par ligne, ×2 pour plusieurs)
+8. **Répétition** ou **Game Over**
 
 
 ### Dimensions du Plateau
