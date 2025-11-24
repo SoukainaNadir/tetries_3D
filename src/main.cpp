@@ -33,6 +33,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 case GLFW_KEY_E: case GLFW_KEY_RIGHT:
                     if (state == GameState::PLAYING) board->moveCurrentPiece(1, 0);
                     break;
+                case GLFW_KEY_UP: case GLFW_KEY_W:  
+                    if (state == GameState::PLAYING) board->rotateCurrentPiece();
+                    break;
                 case GLFW_KEY_ESCAPE:
                     glfwSetWindowShouldClose(window, true);
                     break;

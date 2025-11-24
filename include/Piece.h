@@ -17,6 +17,8 @@ public:
     void render(const glm::mat4& view, const glm::mat4& projection);
     void move(float dx, float dy);
     void setPosition(float x, float y);
+    void rotate(); 
+
     
     std::vector<glm::vec2> getBlockPositions() const;
     glm::vec3 getColor() const { return color; }

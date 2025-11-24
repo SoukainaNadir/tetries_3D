@@ -24,6 +24,10 @@ public:
     void startGame();
     void resetGame();
     void moveCurrentPiece(int dx, int dy);
+    void rotateCurrentPiece(); 
+    void rotateFallingPiece(float dx, float dy, float dz);
+
+
     void dropCurrentPiece();
     
     GameState getGameState() const { return gameState; }

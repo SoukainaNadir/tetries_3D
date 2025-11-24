@@ -15,7 +15,6 @@ Board::Board() : gameState(GameState::WAITING_TO_START), currentPiece(nullptr),
     textRenderer = new TextRenderer();
     textRenderer->setProjection(1200, 900);
     
-    // Caméra positionnée pour voir le jeu de face
     view = glm::lookAt(
         glm::vec3(4.5f, 10.0f, 30.0f),
         glm::vec3(4.5f, 10.0f, 0.0f),
@@ -86,7 +85,6 @@ void Board::spawnNewPiece() {
     PieceType type = static_cast<PieceType>(pieceDist(rng));
     currentPiece = new Piece(type, 5.0f, FIELD_HEIGHT);
     
-    // Si la nouvelle pièce ne peut pas apparaître, c'est game over
     if (!isValidPosition(currentPiece->getBlockPositions())) {
         gameState = GameState::GAME_OVER;
         delete currentPiece;
@@ -109,6 +107,30 @@ void Board::moveCurrentPiece(int dx, int dy) {
     currentPiece->move(dx, dy);
     if (!isValidPosition(currentPiece->getBlockPositions())) {
         currentPiece->move(-dx, -dy);
+    }
+}
+
+void Board::rotateCurrentPiece() {
+    if (!currentPiece || gameState != GameState::PLAYING) return;
+    
+    std::vector<glm::vec2> oldPositions = currentPiece->getBlockPositions();
+    
+    currentPiece->rotate();
+    
+    if (!isValidPosition(currentPiece->getBlockPositions())) {
+        currentPiece->move(1, 0);
+        if (!isValidPosition(currentPiece->getBlockPositions())) {
+            currentPiece->move(-2, 0);
+            if (!isValidPosition(currentPiece->getBlockPositions())) {
+                currentPiece->move(1, 1);
+                if (!isValidPosition(currentPiece->getBlockPositions())) {
+                    currentPiece->move(0, -1);
+                    currentPiece->rotate();
+                    currentPiece->rotate();
+                    currentPiece->rotate();
+                }
+            }
+        }
     }
 }
 
@@ -137,7 +159,6 @@ void Board::lockCurrentPiece() {
     std::vector<glm::vec2> positions = currentPiece->getBlockPositions();
     glm::vec3 color = currentPiece->getColor();
     
-    // On fixe chaque bloc de la pièce dans la grille
     for (const glm::vec2& pos : positions) {
         int x = static_cast<int>(pos.x);
         int y = static_cast<int>(pos.y);
@@ -197,7 +218,6 @@ void Board::dropLinesAbove(int clearedLine) {
 void Board::renderInstructions() {
     glDisable(GL_DEPTH_TEST);
     
-  
     glm::vec3 titleColor(0.85f, 0.45f, 0.55f);
     glm::vec3 subtitleColor(0.55f, 0.45f, 0.65f);
     glm::vec3 keyColor(0.45f, 0.65f, 0.75f);
@@ -231,7 +251,7 @@ void Board::renderInstructions() {
     
     textRenderer->renderText("SCORE", rightX, 780, 3.5f, subtitleColor);
     textRenderer->renderText("--------", rightX, 750, 2.5f, dimColor);
-    
+        
     // Score avec des zéros devant 
     std::string scoreStr = std::to_string(score);
     while (scoreStr.length() < 6) scoreStr = "0" + scoreStr;
@@ -240,33 +260,38 @@ void Board::renderInstructions() {
     textRenderer->renderText("LINES", rightX, 620, 3.5f, subtitleColor);
     textRenderer->renderText(std::to_string(linesCleared), rightX, 570, 4.0f, accentColor);
     
-    textRenderer->renderText("CONTROLS", rightX, 470, 3.0f, subtitleColor);
-    textRenderer->renderText("----------", rightX, 445, 2.5f, dimColor);
+    textRenderer->renderText("CONTROLS", rightX, 490, 3.0f, subtitleColor);
+    textRenderer->renderText("----------", rightX, 465, 2.5f, dimColor);
     
-    float ctrlY = 390.0f;
-    float spacing = 50.0f;
+    float ctrlY = 420.0f;
+    float spacing = 60.0f;
     float scale = 2.5f;
     
     textRenderer->renderText("[A]", rightX, ctrlY, scale, keyColor);
     textRenderer->renderText("or", rightX + 70, ctrlY, 2.0f, dimColor);
     textRenderer->renderText("[<-]", rightX + 105, ctrlY, scale, keyColor);
-    textRenderer->renderText("Left", rightX, ctrlY - 25, scale, textColor);
+    textRenderer->renderText("Left", rightX, ctrlY - 30, scale, textColor);
     
-    textRenderer->renderText("[E]", rightX, ctrlY - spacing*1.5f, scale, keyColor);
-    textRenderer->renderText("or", rightX + 70, ctrlY - spacing*1.5f, 2.0f, dimColor);
-    textRenderer->renderText("[->]", rightX + 105, ctrlY - spacing*1.5f, scale, keyColor);
-    textRenderer->renderText("Right", rightX, ctrlY - spacing*1.5f - 25, scale, textColor);
+    textRenderer->renderText("[E]", rightX, ctrlY - spacing, scale, keyColor);
+    textRenderer->renderText("or", rightX + 70, ctrlY - spacing, 2.0f, dimColor);
+    textRenderer->renderText("[->]", rightX + 105, ctrlY - spacing, scale, keyColor);
+    textRenderer->renderText("Right", rightX, ctrlY - spacing - 30, scale, textColor);
     
-    textRenderer->renderText("[S]", rightX, ctrlY - spacing*3, scale, keyColor);
-    textRenderer->renderText("or", rightX + 70, ctrlY - spacing*3, 2.0f, dimColor);
-    textRenderer->renderText("[v]", rightX + 105, ctrlY - spacing*3, scale, keyColor);
-    textRenderer->renderText("Down", rightX, ctrlY - spacing*3 - 25, scale, textColor);
+    textRenderer->renderText("[S]", rightX, ctrlY - spacing * 2, scale, keyColor);
+    textRenderer->renderText("or", rightX + 70, ctrlY - spacing * 2, 2.0f, dimColor);
+    textRenderer->renderText("[v]", rightX + 105, ctrlY - spacing * 2, scale, keyColor);
+    textRenderer->renderText("Down", rightX, ctrlY - spacing * 2 - 30, scale, textColor);
     
-    textRenderer->renderText("[SPACE]", rightX, ctrlY - spacing*4.5f, scale, keyColor);
-    textRenderer->renderText("Play", rightX, ctrlY - spacing*4.5f - 25, scale, textColor);
+    textRenderer->renderText("[UP]", rightX, ctrlY - spacing * 3, scale, keyColor);
+    textRenderer->renderText("or", rightX + 80, ctrlY - spacing * 3, 2.0f, dimColor);
+    textRenderer->renderText("[W]", rightX + 115, ctrlY - spacing * 3, scale, keyColor);
+    textRenderer->renderText("Rotate", rightX, ctrlY - spacing * 3 - 30, scale, textColor);
     
-    textRenderer->renderText("[ESC]", rightX, ctrlY - spacing*5.8f, scale, keyColor);
-    textRenderer->renderText("Quit", rightX, ctrlY - spacing*5.8f - 25, scale, textColor);
+    textRenderer->renderText("[SPACE]", rightX, ctrlY - spacing * 4, scale, keyColor);
+    textRenderer->renderText("Play", rightX, ctrlY - spacing * 4 - 30, scale, textColor);
+    
+    textRenderer->renderText("[ESC]", rightX, ctrlY - spacing * 5, scale, keyColor);
+    textRenderer->renderText("Quit", rightX, ctrlY - spacing * 5 - 30, scale, textColor);
     
     glEnable(GL_DEPTH_TEST);
 }

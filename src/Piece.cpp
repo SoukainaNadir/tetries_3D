@@ -48,6 +48,17 @@ void Piece::updateCubePositions() {
     }
 }
 
+void Piece::rotate() {
+    std::vector<glm::vec2> newShape;
+    
+    for (const auto& block : shape) {
+        newShape.push_back({block.y, -block.x});
+    }
+    
+    shape = newShape;
+    updateCubePositions();
+}
+
 void Piece::render(const glm::mat4& view, const glm::mat4& projection) {
     for (Cube* cube : cubes) cube->render(view, projection);
 }
@@ -63,6 +74,7 @@ void Piece::setPosition(float x, float y) {
     this->y = y;
     updateCubePositions();
 }
+
 
 std::vector<glm::vec2> Piece::getBlockPositions() const {
     std::vector<glm::vec2> positions;

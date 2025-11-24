@@ -132,7 +132,7 @@ void Cube::setupMesh() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // Les contours pour un joli effet visuel
+    // Les contours pour un effet visuel
     float edgeVertices[] = {
         -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f,
         -0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f,

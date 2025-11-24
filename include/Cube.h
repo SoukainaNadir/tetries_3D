@@ -25,6 +25,7 @@ private:
 
     glm::vec3 position;
     glm::vec3 color;
+    glm::vec3 rotation; 
     
     unsigned int VAO, VBO, EBO;
     unsigned int edgeVAO, edgeVBO;
